@@ -63,9 +63,9 @@ def help(client, message):
 
 #alive mesaji#
 
-@bot.on_message(filters.command("song") & filters.user(Config.BOT_OWNER))
+@bot.on_message(filters.command("alive") & filters.user(Config.BOT_OWNER))
 async def live(client: Client, message: Message):
-    livemsg = await message.reply_text('`/song Music Adı`')
+    livemsg = await message.reply_text('Çalışıyorum 🤓')
     
 #musiqi əmri#
 
@@ -75,7 +75,7 @@ def a(client, message):
     for i in message.command[1:]:
         query += ' ' + str(i)
     print(query)
-    m = message.reply('` Axtarılır 🤓`')
+    m = message.reply('Aranıyor🤓')
     ydl_opts = {"format": "bestaudio[ext=m4a]"}
     try:
         results = []
@@ -97,15 +97,15 @@ def a(client, message):
 
         except Exception as e:
             print(e)
-            m.edit('İstədiyiniz musiqi tapılmadı 😒')
+            m.edit('İsdediğiniz Şarkı Bulunmadı😒')
             return
     except Exception as e:
         m.edit(
-            "İstədiyiniz musiqi tapılmadı 😒"
+            "İsdediğiniz Şarkı Bulunmadı😒"
         )
         print(str(e))
         return
-    m.edit("` Yüklənir 😒.`")
+    m.edit("İndiriliyor 😒")
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -116,9 +116,9 @@ def a(client, message):
         for i in range(len(dur_arr)-1, -1, -1):
             dur += (int(dur_arr[i]) * secmul)
             secmul *= 60
-        message.reply_audio(audio_file, caption=rep, parse_mode='md',quote=False, title=title, duration=dur, thumb=thumb_name, performer="@SongBSRobot")
+        message.reply_audio(audio_file, caption=rep, parse_mode='md',quote=False, title=title, duration=dur, thumb=thumb_name, performer="Cat House 🧶🐈")
         m.delete()
-        bot.send_audio(chat_id=Config.PLAYLIST_ID, audio=audio_file, caption=rep, performer="@SongBSRobot", parse_mode='md', title=title, duration=dur, thumb=thumb_name)
+        bot.send_audio(chat_id=Config.PLAYLIST_ID, audio=audio_file, caption=rep, performer="Cat House 🧶🐈", parse_mode='md', title=title, duration=dur, thumb=thumb_name)
     except Exception as e:
         m.edit('**⚠️ Gözlənilməyən xəta yarandı.**\n**Xahiş edirəm xətanı sahibimə xəbərdar et!**')
         print(e)
