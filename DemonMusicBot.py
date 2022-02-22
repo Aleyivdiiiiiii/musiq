@@ -27,13 +27,13 @@ bot = Client(
 
 @bot.on_message(filters.command(['start']))
 def start(client, message):
-    demon = f'👋 **Salam** {message.from_user.mention}\n\n**ℹ️ Mən musiqi, video yükləmək üçün yaradılmış botam və istədiyiniz mahnının sözlərini məndən öyrənə bilərsiniz 😁**\n\n**✅ Botun istifadə qaydasını öyrənmək üçün** /help **əmrindən istifadə edin**'
+    demon = f'👋🤓 **Salam** {message.from_user.mention}\n\n**ℹ️ Mən musiqi, video yükləmək üçün yaradılmış botam və istədiyiniz mahnının sözlərini məndən öyrənə bilərsiniz 😁**\n\n**✅ Botun istifadə qaydasını öyrənmək üçün** /help **əmrindən istifadə edin**'
     message.reply_text(
         text=demon, 
         quote=False,
         reply_markup=InlineKeyboardMarkup(
             [[
-                    InlineKeyboardButton('Rəsmi Kanal ✅', url='https://t.me/Botsinator'),
+                    InlineKeyboardButton('Music Kanal 🎶', url='https://t.me/BlackMusicKanal'),
                     InlineKeyboardButton('Playlist 🎵', url=f'https://t.me/{Config.PLAYLIST_NAME}')
                   ],[
                     InlineKeyboardButton('Sahib 👨🏻‍💻', url=f'T.me/{Config.BOT_OWNER}')
@@ -46,13 +46,13 @@ def start(client, message):
 
 @bot.on_message(filters.command(['help']))
 def help(client, message):
-    helptext = f'**Musiqi yükləmək üçün /song əmrindən istifadə edə bilərsiniz ⤵️**\n\n**Məsələn:**\n**1.** `/song Ayaz Babayev - Sən Mənlə`\n**2.** `/song https://youtu.be/qLXUa89Q5WI`\n\n**/alive - Botun işlək olduğunu yoxlamaq üçün əmrdir. Yalnız Bot sahibi istifadə edə bilər.**\n\n**⚠️ Botun qruplarda işləyə bilməsi üçün admin olmalıdır !**'
+    helptext = f'**Musiqi yükləmək üçün /bul əmrindən istifadə edə bilərsiniz ⤵️**\n\n**Məsələn:**\n**1.** `/bul Ayaz Babayev - Sən Mənlə`\n**2.** `/bul https://youtu.be/qLXUa89Q5WI`\n\n**/alive - Botun işlək olduğunu yoxlamaq üçün əmrdir. Yalnız Bot sahibi istifadə edə bilər.**\n\n**⚠️ Botun qruplarda işləyə bilməsi üçün admin olmalıdır !**'
     message.reply_text(
         text=helptext, 
         quote=False,
         reply_markup=InlineKeyboardMarkup(
             [[
-                    InlineKeyboardButton('Rəsmi Kanal ✅', url='https://t.me/Botsinator'),
+                    InlineKeyboardButton('Music Kanal 🎶', url='https://t.me/BlackMusicKanal'),
                     InlineKeyboardButton('Playlist 🎵', url=f'https://t.me/{Config.PLAYLIST_NAME}')
                   ],[
                     InlineKeyboardButton('Sahib 👨🏻‍💻', url=f'T.me/{Config.BOT_OWNER}')
@@ -63,19 +63,19 @@ def help(client, message):
 
 #alive mesaji#
 
-@bot.on_message(filters.command("alive") & filters.user(Config.BOT_OWNER))
+@bot.on_message(filters.command("song") & filters.user(Config.BOT_OWNER))
 async def live(client: Client, message: Message):
-    livemsg = await message.reply_text('`Mükəmməl İşləyirəm 😎`')
+    livemsg = await message.reply_text('`/song Music Adı`')
     
 #musiqi əmri#
 
-@bot.on_message(filters.command(['song']))
+@bot.on_message(filters.command(['bul']))
 def a(client, message):
     query = ''
     for i in message.command[1:]:
         query += ' ' + str(i)
     print(query)
-    m = message.reply('`🔎 Axtarılır...`')
+    m = message.reply('` Axtarılır 🤓`')
     ydl_opts = {"format": "bestaudio[ext=m4a]"}
     try:
         results = []
@@ -97,15 +97,15 @@ def a(client, message):
 
         except Exception as e:
             print(e)
-            m.edit('İstədiyiniz musiqi tapılmadı 😔')
+            m.edit('İstədiyiniz musiqi tapılmadı 😒')
             return
     except Exception as e:
         m.edit(
-            "İstədiyiniz musiqi tapılmadı 😔"
+            "İstədiyiniz musiqi tapılmadı 😒"
         )
         print(str(e))
         return
-    m.edit("`📥 Musiqini tapdım və endirirəm.`")
+    m.edit("` Yüklənir 😒.`")
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -116,9 +116,9 @@ def a(client, message):
         for i in range(len(dur_arr)-1, -1, -1):
             dur += (int(dur_arr[i]) * secmul)
             secmul *= 60
-        message.reply_audio(audio_file, caption=rep, parse_mode='md',quote=False, title=title, duration=dur, thumb=thumb_name, performer="@Botsinator")
+        message.reply_audio(audio_file, caption=rep, parse_mode='md',quote=False, title=title, duration=dur, thumb=thumb_name, performer="@SongBSRobot")
         m.delete()
-        bot.send_audio(chat_id=Config.PLAYLIST_ID, audio=audio_file, caption=rep, performer="@Botsinator", parse_mode='md', title=title, duration=dur, thumb=thumb_name)
+        bot.send_audio(chat_id=Config.PLAYLIST_ID, audio=audio_file, caption=rep, performer="@SongBSRobot", parse_mode='md', title=title, duration=dur, thumb=thumb_name)
     except Exception as e:
         m.edit('**⚠️ Gözlənilməyən xəta yarandı.**\n**Xahiş edirəm xətanı sahibimə xəbərdar et!**')
         print(e)
